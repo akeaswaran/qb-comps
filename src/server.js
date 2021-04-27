@@ -1,6 +1,6 @@
 const express = require('express');
 const morgan = require("morgan");
-const NFL = require('./src/NFL.js');
+const NFL = require('./NFL');
 var path = require('path');
 const port = process.env.PORT || 8000;
 
