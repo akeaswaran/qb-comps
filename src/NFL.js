@@ -23,6 +23,29 @@ async function retrievePlayers() {
     }
 }
 
+async function retrieveExtendedPlayers() {
+    try {
+        let tokenData = await retrieveToken()
+        let players = await get("/api/nfl/players", {
+            tempToken: tokenData
+        });
+
+        if (players.length > 0) {
+            var playerPromiseSet = []
+            players.forEach(item => {
+                playerPromiseSet.push(retrievePlayer(item.playerId))
+            })
+            var results = await Promise.all(playerPromiseSet)
+            results = results.reduce((a, n) => a = a.concat(n), [])
+            return results;
+        } else {
+            return []
+        }
+    } catch (err) {
+        return err
+    }
+}
+
 async function retrievePlayer(id) {
     try {
         let tokenData = await retrieveToken()
@@ -50,7 +73,7 @@ async function get(url, headers) {
 }
 
 router.get("/players", async (req, res) => {
-    let result = await retrievePlayers()
+    let result = await retrieveExtendedPlayers()
     return res.json(result);
 })
 
