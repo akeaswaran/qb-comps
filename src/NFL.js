@@ -17,10 +17,7 @@ async function retrievePlayers() {
             tempToken: tokenData
         });
     } catch (err) {
-        return {
-            status: "error",
-            message: err
-        }
+        return err
     }
 }
 
@@ -31,10 +28,7 @@ async function retrievePlayer(id) {
             tempToken: tokenData
         });
     } catch (err) {
-        return {
-            status: "error",
-            message: err
-        }
+        return err
     }
 }
 
@@ -48,20 +42,6 @@ async function get(url, params) {
     let content = res.data;
     if (content == null) {
         throw Error(`Data not available for GET endpoint ${url}.`)
-    }
-
-    return content;
-}
-
-async function post(url, body, params) {
-    const res =  await axios.post(`${baseURL}/${url}`, body, {
-        protocol: "https",
-        params: params
-    })
-
-    let content = res.data;
-    if (content == null) {
-        throw Error(`Data not available for POST endpoint ${url}.`)
     }
 
     return content;
