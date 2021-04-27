@@ -6,7 +6,8 @@ require('dotenv').config();
 
 async function retrieveToken() {
     let tokenContent = await get("/api/token", {
-        apiKey: process.env.TRUMEDIA_API_KEY
+        apiKey: process.env.TRUMEDIA_API_KEY,
+        'Content-Type': 'application/json'
     })
     return tokenContent.token
 }
@@ -33,11 +34,11 @@ async function retrievePlayer(id) {
     }
 }
 
-async function get(url, params) {
-    const res =  await axios.get(`${baseURL}${url}`, {
-        protocol: "https",
-        params: params,
-        accept: "application/json"
+async function get(url, headers) {
+    const res = await axios({
+        method: 'GET',
+        url: `${baseURL}${url}`,
+        headers: headers
     })
 
     let content = res.data;
