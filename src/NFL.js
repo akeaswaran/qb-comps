@@ -2,6 +2,7 @@ const axios = require("axios");
 const express = require('express');
 const router = express.Router();
 const baseURL = "https://project.trumedianetworks.com"
+require('dotenv').config();
 
 async function retrieveToken() {
     let tokenContent = await get("/api/token", {
