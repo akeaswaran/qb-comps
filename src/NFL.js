@@ -72,14 +72,44 @@ async function get(url, headers) {
     return content;
 }
 
-router.get("/players", async (req, res) => {
-    let result = await retrieveExtendedPlayers()
-    return res.json(result);
-})
+router.get('/', async (req, res) => {
+    return await res.redirect('/nfl/players/extended');
+});
 
-router.get("/player/:playerId", async (req, res) => {
-    let result = await retrievePlayer(req.playerId)
-    return res.json(result);
-})
+router.route("/players")
+    .post(async (req, res) => {
+        let result = await retrievePlayers()
+        return res.json(result);
+    })
+    .get(async (req, res) => {
+        let result = await retrievePlayers()
+        return res.render("list", {
+            players: result
+        })
+    })
+
+router.route("/players/extended")
+    .post(async (req, res) => {
+        let result = await retrieveExtendedPlayers()
+        return res.json(result);
+    })
+    .get(async (req, res) => {
+        let result = await retrievePlayers()
+        return res.render("list", {
+            players: result
+        })
+    })
+
+router.route("/player/:playerId")
+    .post(async (req, res) => {
+        let result = await retrievePlayer(req.params.playerId)
+        return res.json(result);
+    })
+    .get(async (req, res) => {
+        let result = await retrievePlayer(req.params.playerId)
+        return res.render("player", {
+            player: result
+        })
+    })
 
 module.exports = router;

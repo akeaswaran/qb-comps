@@ -23,7 +23,6 @@ app.listen(port, () => {
 })
 
 app.use(function (err, req, res, next) {
-    debuglog(err.stack)
     if (req.method == "POST") {
         return res.status(500).json({
             status: 500,
