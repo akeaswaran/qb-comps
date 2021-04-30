@@ -125,7 +125,7 @@ var selectedGame = "";
                             ]
                         },
                         label: context => {
-                            return `Y/A: ${Math.round(context.raw * 100) / 100}`;
+                            return `Yds/Att: ${Math.round(context.raw * 100) / 100}`;
                         }
                     }
                 },
