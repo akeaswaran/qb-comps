@@ -55,7 +55,7 @@ players.forEach(item => {
                             <!-- <%= JSON.stringify(statAccumulation) %> -->
                             <ul class="list-unstyled mt-3 mb-4">
                               <li><b>2018 season (<%= items.length %> game<%= items.length == 1 ? "" : "s" %>)</b> </li>
-                              <li><%= statAccumulation["Cmp"] %>/<%= statAccumulation["Att"] %> (<%= Math.round(completionPct) %>%)</li>
+                              <li><%= statAccumulation["Cmp"] %>/<%= statAccumulation["Att"] %> (<%= Math.round(completionPct) %>% Comp)</li>
                               <li><%= statAccumulation["PsYds"] %> Pass Yds, <%= statAccumulation["PsTD"] %> Pass TD, <%= statAccumulation["Int"] %> INT</li>
                               <li><%= statAccumulation["Rush"] %> Car, <%= statAccumulation["RshYds"] %> Rush Yds, <%= statAccumulation["RshTD"] %> Rush TD</li>
                               <li><%= statAccumulation["Sack"] %> Sck</li>

@@ -35,7 +35,7 @@
                     %>
                     <h1 class="align-items-middle"><img class="img-fluid text-small text-muted" width="35px" src="<%= player.teamImage %>"> <%= player.fullName %></h1>
                     <h5>2018 season (<%= games.length %> game<%= games.length == 1 ? "" : "s" %>)</h5>
-                    <p style="line-height: 1em;"><i>Passing:</i> <%= statAccumulation["Cmp"] %>/<%= statAccumulation["Att"] %> (<%= Math.round(completionPct) %>%), <%= statAccumulation["PsYds"] %> Pass Yds, <%= statAccumulation["PsTD"] %> Pass TD, <%= statAccumulation["Int"] %> INT, <%= statAccumulation["Sack"] %> Sck</p> 
+                    <p style="line-height: 1em;"><i>Passing:</i> <%= statAccumulation["Cmp"] %>/<%= statAccumulation["Att"] %> (<%= Math.round(completionPct) %>% Comp), <%= statAccumulation["PsYds"] %> Pass Yds, <%= statAccumulation["PsTD"] %> Pass TD, <%= statAccumulation["Int"] %> INT, <%= statAccumulation["Sack"] %> Sck</p> 
                     <p style="line-height: 1em;"><i>Rushing:</i> <%= statAccumulation["Rush"] %> Car, <%= statAccumulation["RshYds"] %> Rush Yds, <%= statAccumulation["RshTD"] %> Rush TD</p>
                     <a class="btn btn-outline-light" href="/nfl" role="button"><i class="bi bi-arrow-left"></i> Return to Player List</a>
                 </div>
