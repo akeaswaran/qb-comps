@@ -9,7 +9,9 @@ This project is built to be used by fans or media looking to track and report tr
 
 ## Visualization Formats
 
-* Line chart for time series data (completion % and yards per attempt)
+* Line charts for time series data (completion % and yards per attempt)
+    - displayed separately to avoid confusion
+    
 * Tables for game logs
 
 ## Areas for Future Improvement
