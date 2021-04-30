@@ -3,6 +3,12 @@ function calculateCompPct(game) {
     return (game["Att"] == 0) ? 0 : (100 * (parseFloat(game["Cmp"]) / parseFloat(game["Att"])))
 }
 
+function composeStatLine(gm) {
+    return `${gm.Cmp}/${gm.Att}, ${gm.PsYds} yd${ (Math.abs(parseFloat(gm.PsYds)) == 1) ? "" : "s" }, ${gm.PsTD} TD, ${gm.Int} INT`;
+}
+
+var selectedGame = "";
+
 (function () {
     'use strict'
 
@@ -38,7 +44,8 @@ function calculateCompPct(game) {
                             let context = tooltip[0]
                             let gm = games[context.dataIndex]
                             return [
-                                `Week ${tooltip[0].label} vs ${gm.opponent}`
+                                `Week ${tooltip[0].label} vs ${gm.opponent}`,
+                                composeStatLine(gm)
                             ]
                         },
                         label: context => {
@@ -103,7 +110,8 @@ function calculateCompPct(game) {
                             let context = tooltip[0]
                             let gm = games[context.dataIndex]
                             return [
-                                `Week ${tooltip[0].label} vs ${gm.opponent}`
+                                `Week ${tooltip[0].label} vs ${gm.opponent}`,
+                                composeStatLine(gm)
                             ]
                         },
                         label: context => {
