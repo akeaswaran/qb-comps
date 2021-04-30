@@ -22,6 +22,9 @@ var selectedGame = "";
                     data: games.map(gm => calculateCompPct(gm)),
                     borderColor: teamColor,
                     backgroundColor: teamColor,
+                    pointHitRadius: 10,
+                    pointHoverRadius: 10,
+                    pointRadius: 10,
                     pointStyle: games.map(gm => {
                         var logo = new Image()
                         logo.src = gm.opponentImage;
