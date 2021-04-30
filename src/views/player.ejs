@@ -59,16 +59,17 @@
                         <thead>
                           <tr>
                             <th scope="col">Week</th>
-                            <th scope="col">Opponent</th>
-                            <th scope="col" class="text-right">Stats</th>
+                            <th scope="col" class="text-right">Statistics</th>
                           </tr>
                         </thead>
                         <tbody>
                         <% games.forEach(gm => { %>
                             <tr id="game-<%= gm.opponent %>">
-                                <td><%= gm.week %> (<%= gm.gameDate %>)</td>
-                                <td><img width="25px" src="<%= gm.opponentImage %>"/> <%= gm.opponent %></td>
-                                <td class="text-right"><%= gm.Cmp %>/<%= gm.Att %>, <%= gm.PsYds %> yd<%= (Math.abs(parseFloat(gm.PsYds)) == 1) ? "" : "s" %>, <%= gm.PsTD %> TD, <%= gm.Int %> INT</td>
+                                <td><%= gm.week %> vs <img width="25px" title="<%= gm.opponent %>" src="<%= gm.opponentImage %>"/></td>
+                                <td class="text-right">
+                                    <p class="p-0 m-0"><i>Passing:</i> <%= gm.Cmp %>/<%= gm.Att %>, <%= gm.PsYds %> yd<%= (Math.abs(parseFloat(gm.PsYds)) == 1) ? "" : "s" %>, <%= gm.PsTD %> TD, <%= gm.Int %> INT</p>
+                                    <p class="p-0 m-0"><i>Rushing:</i> <%= gm.Rush %> Car, <%= gm.RshYds %> yd<%= (Math.abs(parseFloat(gm.RshYds)) == 1) ? "" : "s" %>, <%= gm.RshTD %> Rush TD</p>
+                                </td>
                             </tr>
                         <% }) %>
                         </tbody>
