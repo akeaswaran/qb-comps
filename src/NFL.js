@@ -1,8 +1,16 @@
 const axios = require("axios");
 const express = require('express');
+const moment = require('moment');
+
 const router = express.Router();
 const baseURL = "https://project.trumedianetworks.com"
 require('dotenv').config();
+
+let teamColors = {
+    "JAX" : "#006778",
+    "OAK" : "#000000",
+    "CLE" : "#FF3C00"
+}
 
 async function retrieveToken() {
     let tokenContent = await get("/api/token", {
@@ -49,9 +57,13 @@ async function retrieveExtendedPlayers() {
 async function retrievePlayer(id) {
     try {
         let tokenData = await retrieveToken()
-        return await get(`/api/nfl/player/${id}`, {
+        var games = await get(`/api/nfl/player/${id}`, {
             tempToken: tokenData
         });
+        games.forEach(gm => {
+            gm.gameDate = moment(gm.gameDate).format("M/DD, h:mma")
+        })
+        return games
     } catch (err) {
         return err
     }
@@ -94,7 +106,7 @@ router.route("/players/extended")
         return res.json(result);
     })
     .get(async (req, res) => {
-        let result = await retrievePlayers()
+        let result = await retrieveExtendedPlayers()
         return res.render("list", {
             players: result
         })
@@ -108,7 +120,14 @@ router.route("/player/:playerId")
     .get(async (req, res) => {
         let result = await retrievePlayer(req.params.playerId)
         return res.render("player", {
-            player: result
+            games: result,
+            player: {
+                fullName: result[0].fullName,
+                playerImage: result[0].playerImage,
+                teamImage: result[0].teamImage,
+                team: result[0].team,
+                teamColor: teamColors[result[0].team]
+            }
         })
     })
 

@@ -1,3 +1,14 @@
+<%
+
+let playerDictionary = {}
+players.forEach(item => {
+    if (!(item.playerId in playerDictionary)) {
+        playerDictionary[item.playerId] = []
+    }
+    playerDictionary[item.playerId].push(item)
+})
+
+%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -10,47 +21,51 @@
         <meta name="referrer" content="origin-when-cross-origin">
     </head>
     <body>
+        <%- include("partials/header.ejs") %>
         <div class="container">
-            <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
-                <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
-                  <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
-                  <span class="fs-4">Quarterback Comparison (2018)</span>
-                </a>
-            
-                <ul class="nav nav-pills">
-                  <li class="nav-item"><a href="#" class="nav-link">Home</a></li>
-                  <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                      Player List
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                      <% players.forEach(item => { %>
-                        <li><a class="dropdown-item" href="/nfl/player/<%= item.playerId %>"><%= item.fullName %></a></li>
-                      <% }) %>
-                    </ul>
-                  </li>
-                </ul>
-            </header>
+            <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
+                <% 
+                for (let playerId in playerDictionary) {
+                    let items = playerDictionary[playerId]
+                    let item = items[0]
+                %>
+                    <div class="col">
+                        <div class="card mb-4 rounded-3 shadow-sm">
+                          <div class="card-header py-3">
+                            <h4 class="my-0 fw-normal align-middle"><img width="25px" src="<%= item.teamImage %>"/> <span><%= item.fullName %></span></h4>
+                          </div>
+                          <div class="card-body">
+                            <h1 class="card-title pricing-card-title"><img width="125px" src="<%= item.playerImage %>"/></h1>
+                            <%
+                            
+                            let stats = ["Att","Cmp","Sack","Int","PsYds","PsTD","Rush","RshYds","RshTD"]
+                            var statAccumulation = {}
+                            items.forEach(item => {
+                                stats.forEach(s => {
+                                    if (!(s in statAccumulation)) {
+                                        statAccumulation[s] = 0
+                                    }
+                                    statAccumulation[s] += parseInt(item[s])
+                                })
+                            })
+
+                            let completionPct = (statAccumulation["Att"] == 0) ? 0 : (100 * (parseFloat(statAccumulation["Cmp"]) / parseFloat(statAccumulation["Att"])))
+                            
+                            %>
+                            <!-- <%= JSON.stringify(statAccumulation) %> -->
+                            <ul class="list-unstyled mt-3 mb-4">
+                              <li><b>2018 season (<%= items.length %> game<%= items.length == 1 ? "" : "s" %>)</b> </li>
+                              <li><%= statAccumulation["Cmp"] %>/<%= statAccumulation["Att"] %> (<%= Math.round(completionPct) %>%)</li>
+                              <li><%= statAccumulation["PsYds"] %> Pass Yds, <%= statAccumulation["PsTD"] %> Pass TD, <%= statAccumulation["Int"] %> INT</li>
+                              <li><%= statAccumulation["Rush"] %> Car, <%= statAccumulation["RshYds"] %> Rush Yds, <%= statAccumulation["RshTD"] %> Rush TD</li>
+                              <li><%= statAccumulation["Sack"] %> Sck</li>
+                            </ul>
+                            <a role="button" class="w-100 btn btn-lg btn-outline-primary" href="/nfl/player/<%= item.playerId %>">View profile</a>
+                          </div>
+                        </div>
+                    </div>
+                <% } %>
         </div>
-        <div class="container">
-            <table class="table table-sm table-responsive table-hover" style="border-collapse:collapse;">
-                <thead>
-                    <tr>
-                        <th scope="col">Quarterback</th>
-                        <th scope="col">Last Statline</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <% players.forEach(item => { %>
-                        <tr>
-                            <td class="align-middle"><img width="50px" src="<%= item.playerImage %>"/> <%= item.fullName %> <span><img width="30px" src="<%= item.teamImage %>"/></span></td>
-                        </tr>
-                    <% }) %>
-                </tbody>
-            </table>
-        </div>
-        <script src="/js/popper.min.js"></script>
-        <script src="/js/bootstrap.min.js"></script>
-        <script src="/js/chart.min.js"></script>
+        <%- include("partials/scripts.ejs") %>
     </body>
 </html>

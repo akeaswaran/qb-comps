@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <meta http-equiv="x-ua-compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <meta name="referrer" content="origin-when-cross-origin">
+    </head>
+    <body>
+        <div class="container-fluid mb-3">
+            <div class="row h-100 p-4 text-white justify-content-center align-items-center bg-dark">
+                <div class="offset-lg-3 col-lg-2 col-md-6">
+                    <img class="img-fluid" src="<%= player.playerImage %>"/> 
+                </div>
+                <div class="col-md-6 col-lg-5">
+                    
+                    <%
+                    let stats = ["Att","Cmp","Sack","Int","PsYds","PsTD","Rush","RshYds","RshTD"]
+                    var statAccumulation = {}
+                    games.forEach(gm => {
+                        stats.forEach(s => {
+                            if (!(s in statAccumulation)) {
+                                statAccumulation[s] = 0
+                            }
+                            statAccumulation[s] += parseInt(gm[s])
+                        })
+                    })
+
+                    let completionPct = (statAccumulation["Att"] == 0) ? 0 : (100 * (parseFloat(statAccumulation["Cmp"]) / parseFloat(statAccumulation["Att"])))
+                    
+                    %>
+                    <h1 class="align-items-middle"><img class="img-fluid text-small text-muted" width="35px" src="<%= player.teamImage %>"> <%= player.fullName %></h1>
+                    <h5>2018 season (<%= games.length %> game<%= games.length == 1 ? "" : "s" %>)</h5>
+                    <p style="line-height: 1em;"><i>Passing:</i> <%= statAccumulation["Cmp"] %>/<%= statAccumulation["Att"] %> (<%= Math.round(completionPct) %>%), <%= statAccumulation["PsYds"] %> Pass Yds, <%= statAccumulation["PsTD"] %> Pass TD, <%= statAccumulation["Int"] %> INT, <%= statAccumulation["Sack"] %> Sck</p> 
+                    <p style="line-height: 1em;"><i>Rushing:</i> <%= statAccumulation["Rush"] %> Car, <%= statAccumulation["RshYds"] %> Rush Yds, <%= statAccumulation["RshTD"] %> Rush TD</p>
+                </div>
+            </div>
+        </div>
+        <div class="container mb-3">
+            <div class="row">
+                <div class="col-lg-6">
+                    <h3>Completion Percentage</h3>
+                    <div class="chart-container mb-3" style="position: relative;">
+                        <canvas id="comp-chart"></canvas>
+                    </div>
+                    <div class="chart-container mb-3" style="position: relative;">
+                        <canvas id="comp-bars"></canvas>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <h3>Game Log</h3>
+                    <table class="table">
+                        <thead>
+                          <tr>
+                            <th scope="col">Week</th>
+                            <th scope="col">Opponent</th>
+                            <th scope="col" class="text-right">Stats</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                        <% games.forEach(gm => { %>
+                            <tr>
+                                <td><%= gm.week %> (<%= gm.gameDate %>)</td>
+                                <td><img width="25px" src="<%= gm.opponentImage %>"/> <%= gm.opponent %></td>
+                                <td class="text-right"><%= gm.Cmp %>/<%= gm.Att %>, <%= gm.PsYds %> yd<%= (Math.abs(parseFloat(gm.PsYds)) == 1) ? "" : "s" %>, <%= gm.PsTD %> TD, <%= gm.Int %> INT</td>
+                            </tr>
+                        <% }) %>
+                        </tbody>
+                      </table>
+                </div>
+            </div>
+        </div>
+        <%- include("partials/scripts.ejs") %>
+        <script>
+            let games = <%- JSON.stringify(games) %>;
+            let teamColor = "<%- player.teamColor %>";
+        </script>
+        <script src="/js/stats.js"></script>
+    </body>
+</html>
