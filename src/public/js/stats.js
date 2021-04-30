@@ -49,6 +49,8 @@ function calculateCompPct(game) {
             },
             scales: {
                 y: {
+                    min: 0,
+                    max: 100,
                     title: {
                         display: true,
                         text: "Comp Pct %"
@@ -113,6 +115,8 @@ function calculateCompPct(game) {
             },
             scales: {
                 y: {
+                    min: 0,
+                    max: 100,
                     title: {
                         display: true,
                         text: "Comp Pct %"
