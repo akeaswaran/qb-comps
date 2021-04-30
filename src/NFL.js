@@ -6,6 +6,7 @@ const router = express.Router();
 const baseURL = "https://project.trumedianetworks.com"
 require('dotenv').config();
 
+//  Provided by teamcolorcodes.com
 let teamColors = {
     "JAX" : "#006778",
     "OAK" : "#000000",
