@@ -18,7 +18,7 @@ var selectedGame = "";
 
     let lineCanvas = document.getElementById("comp-chart");
     let lineChartConfig = {
-        type: "scatter",
+        type: "line",
         data: {
             labels: games.map(gm => gm.week),
             datasets: [
@@ -87,7 +87,7 @@ var selectedGame = "";
 
     let attChart = document.getElementById("yds-per-att-chart");
     let attChartConfig = {
-        type: "scatter",
+        type: "line",
         data: {
             labels: games.map(gm => gm.week),
             datasets: [
