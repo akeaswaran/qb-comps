@@ -52,15 +52,16 @@ players.forEach(item => {
                             })
 
                             let completionPct = (statAccumulation["Att"] == 0) ? 0 : (100 * (parseFloat(statAccumulation["Cmp"]) / parseFloat(statAccumulation["Att"])))
-                            
+                            let ypa = (statAccumulation["Att"] == 0) ? 0 : (parseFloat(statAccumulation["PsYds"]) / parseFloat(statAccumulation["Att"]))
+
                             %>
                             <!-- <%= JSON.stringify(statAccumulation) %> -->
                             <ul class="list-unstyled mt-3 mb-4">
                               <li><b>2018 season (<%= items.length %> game<%= items.length == 1 ? "" : "s" %>)</b> </li>
                               <li><%= statAccumulation["Cmp"] %>/<%= statAccumulation["Att"] %> (<%= Math.round(completionPct) %>% Comp)</li>
-                              <li><%= statAccumulation["PsYds"] %> Pass Yds, <%= statAccumulation["PsTD"] %> Pass TD, <%= statAccumulation["Int"] %> INT</li>
+                              <li><%= statAccumulation["PsYds"] %> Pass Yds (<%= Math.round(ypa * 100) / 100 %> Yds/Att)</li>
+                              <li><%= statAccumulation["PsTD"] %> Pass TD, <%= statAccumulation["Int"] %> INT, <%= statAccumulation["Sack"] %> Sck</li>
                               <li><%= statAccumulation["Rush"] %> Car, <%= statAccumulation["RshYds"] %> Rush Yds, <%= statAccumulation["RshTD"] %> Rush TD</li>
-                              <li><%= statAccumulation["Sack"] %> Sck</li>
                             </ul>
                             <a role="button" class="w-100 btn btn-lg btn-outline-primary" href="/nfl/player/<%= item.playerId %>">View profile</a>
                           </div>
