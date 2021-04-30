@@ -3,6 +3,10 @@ function calculateCompPct(game) {
     return (game["Att"] == 0) ? 0 : (100 * (parseFloat(game["Cmp"]) / parseFloat(game["Att"])))
 }
 
+function calculateYdsPerAttempt(game, adjustForSacks) {
+    return (game["Att"] == 0) ? 0 : (parseFloat(game["PsYds"]) / parseFloat(game["Att"]))
+}
+
 function composeStatLine(gm) {
     return `${gm.Cmp}/${gm.Att}, ${gm.PsYds} yd${ (Math.abs(parseFloat(gm.PsYds)) == 1) ? "" : "s" }, ${gm.PsTD} TD, ${gm.Int} INT`;
 }
@@ -14,7 +18,7 @@ var selectedGame = "";
 
     let lineCanvas = document.getElementById("comp-chart");
     let lineChartConfig = {
-        type: "line",
+        type: "scatter",
         data: {
             labels: games.map(gm => gm.week),
             datasets: [
@@ -81,16 +85,19 @@ var selectedGame = "";
         }
     };
 
-    let barCanvas = document.getElementById("comp-bars");
-    let barChartConfig = {
-        type: "bar",
+    let attChart = document.getElementById("yds-per-att-chart");
+    let attChartConfig = {
+        type: "scatter",
         data: {
             labels: games.map(gm => gm.week),
             datasets: [
                 {
-                    data: games.map(gm => calculateCompPct(gm)),
+                    data: games.map(gm => calculateYdsPerAttempt(gm)),
                     borderColor: teamColor,
                     backgroundColor: teamColor,
+                    pointHitRadius: 10,
+                    pointHoverRadius: 10,
+                    pointRadius: 10,
                     pointStyle: games.map(gm => {
                         var logo = new Image()
                         logo.src = gm.opponentImage;
@@ -118,7 +125,7 @@ var selectedGame = "";
                             ]
                         },
                         label: context => {
-                            return `Comp Pct: ${Math.round(context.raw)}%`;
+                            return `Y/A: ${Math.round(context.raw * 100) / 100}`;
                         }
                     }
                 },
@@ -126,17 +133,10 @@ var selectedGame = "";
             },
             scales: {
                 y: {
-                    min: 0,
-                    max: 100,
                     title: {
                         display: true,
-                        text: "Comp Pct %"
-                    },
-                    ticks: {
-                        callback: function(value, index, values) {
-                            return `${value}%`
-                        }
-                    },
+                        text: "Yards per Attempt"
+                    }
                 },
                 x: {
                     title: {
@@ -150,5 +150,5 @@ var selectedGame = "";
     };
     
     let lineChart = new Chart(lineCanvas, lineChartConfig);
-    let bar = new Chart(barCanvas, barChartConfig);
+    let ypaChart = new Chart(attChart, attChartConfig);
 })()
