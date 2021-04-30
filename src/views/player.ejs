@@ -65,11 +65,16 @@
                           </tr>
                         </thead>
                         <tbody>
-                        <% games.forEach(gm => { %>
+                        <% games.forEach(gm => {
+                            let completionPct = (gm["Att"] == 0) ? 0 : (100 * (parseFloat(gm["Cmp"]) / parseFloat(gm["Att"])))
+                            let ypa = (gm["Att"] == 0) ? 0 : (parseFloat(gm["PsYds"]) / parseFloat(gm["Att"]))    
+                        %>
+                            
                             <tr id="game-<%= gm.opponent %>">
-                                <td><%= gm.week %> vs <img width="25px" title="<%= gm.opponent %>" src="<%= gm.opponentImage %>"/></td>
+                                <td><%= gm.week %> vs <img class="img-fluid" width="25px" title="<%= gm.opponent %>" src="<%= gm.opponentImage %>"/></td>
                                 <td class="text-right">
                                     <p class="p-0 m-0"><i>Passing:</i> <%= gm.Cmp %>/<%= gm.Att %>, <%= gm.PsYds %> yd<%= (Math.abs(parseFloat(gm.PsYds)) == 1) ? "" : "s" %>, <%= gm.PsTD %> TD, <%= gm.Int %> INT</p>
+                                    <p class="p-0 m-0"><i style="opacity: 0">Passing:</i> <%= Math.round(completionPct) %>% Comp, <%= Math.round(ypa * 100) / 100 %> Yds/Att</p>
                                     <% if (gm.Rush > 0) { %>
                                         <p class="p-0 m-0"><i>Rushing:</i> <%= gm.Rush %> Car, <%= gm.RshYds %> yd<%= (Math.abs(parseFloat(gm.RshYds)) == 1) ? "" : "s" %>, <%= gm.RshTD %> Rush TD</p>
                                     <% } %>
