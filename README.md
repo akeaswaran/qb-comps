@@ -28,3 +28,4 @@ Node.js -- Express backend + EJS frontend
 
 Akshay Easwaran ([akeaswaran@me.com](mailto:akeaswaran@me.com))
 
+Data provided by TruMedia Networks.
